@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h2>Hello! New posts in favorite <a href="{{ link }}">{{ category }}:
+    <table>
+        {% for post in {news} %}
+        <tr><td>{{ post.title }}</td></tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
