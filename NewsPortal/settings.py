@@ -15,7 +15,6 @@ from dotenv import load_dotenv
 from pathlib import Path
 
 
-
 load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -177,3 +176,104 @@ CELERY_RESULT_BACKEND = 'redis://localhost:6379'
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': True,
+    'style': '{',
+    'loggers': {
+            'django': {
+                'handlers': ['console', 'console_W', 'console_E', 'Ex_2'],
+            },
+            'django.request': {
+                'handlers': ['Ex_3', 'Ex_5'],
+            },
+            'django.server': {
+                'handlers': ['Ex_3', 'Ex_5'],
+            },
+            'django.template': {
+                'handlers': ['Ex_3'],
+            },
+            'django.db.backends': {
+                'handlers': ['Ex_3'],
+            },
+            'django.security': {
+                'handlers': ['Ex_4'],
+            }
+        },
+    'handlers': {
+        'console': {
+            'level': 'DEBUG',
+            'filters': ['require_debug_true'],
+            'class': 'logging.StreamHandler',
+            'formatter': 'console_1'
+        },
+        'console_W': {
+            'level': 'WARNING',
+            'filters': ['require_debug_true'],
+            'class': 'logging.StreamHandler',
+            'formatter': 'console_W'
+        },
+        'console_E': {
+            'level': 'ERROR',
+            'filters': ['require_debug_true'],
+            'class': 'logging.StreamHandler',
+            'formatter': 'console_E'
+        },
+        'Ex_2': {
+            'level': 'INFO',
+            'filters': ['require_debug_false'],
+            'class': 'logging.FileHandler',
+            'filename': 'general.log',
+            'formatter': 'EX_2'
+        },
+        'Ex_3': {
+            'level': 'ERROR',
+            'class': 'logging.FileHandler',
+            'filename': 'errors.log',
+            'formatter': 'console_E'
+        },
+        'Ex_4': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': 'security.log',
+            'formatter': 'EX_2'
+        },
+        'Ex_5': {
+            'level': 'ERROR',
+            'filters': ['require_debug_false'],
+            'class': 'django.utils.log.AdminEmailHandler',
+            'formatter': 'console_W'
+        }
+    },
+    'formatters': {
+        'console_1': {
+            'format': '{asctime} {levelname} {message}',
+            'datetime': '%H:%M:%S',
+            'style': '{',
+        },
+        'console_W': {
+            'format': '{asctime} {pathname} {levelname} {message}',
+            'datetime': '%H:%M:%S',
+            'style': '{',
+        },
+        'console_E': {
+            'format': '{asctime} {exc_info} {pathname} {levelname} {message}',
+            'datetime': '%H:%M:%S',
+            'style': '{',
+        },
+        'EX_2': {
+            'format': '{asctime} {levelname} {module} {message}',
+            'datetime': '%H:%M:%S',
+            'style': '{',
+        },
+    },
+    'filters': {
+        'require_debug_true': {
+            '()': 'django.utils.log.RequireDebugTrue',
+        },
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse'
+        }
+    },
+}
